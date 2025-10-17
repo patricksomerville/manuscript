@@ -1,5 +1,29 @@
 # Manuscript Workflow System
 
+A proprietary workflow system for the generation, expansion, and management of novel-length narratives.
+
+## What's New
+
+**✨ Version 2.0 - Unified CLI Interface**
+
+The manuscript workflow now includes a unified command-line interface (`manuscript`) that simplifies all operations.
+
+```bash
+# Install the CLI
+./install.sh
+
+# Initialize your project
+manuscript init --airtable-key YOUR_KEY --airtable-base YOUR_BASE
+
+# Segment a chapter
+manuscript segment chapter01.txt CH001
+
+# Check status
+manuscript status
+```
+
+See [QUICKSTART.md](QUICKSTART.md) for detailed instructions.
+
 This repository contains the codebase and documentation for a proprietary workflow designed for the generation, expansion, and management of novel-length narratives. The system leverages a combination of a structured database (Airtable), custom Python scripts for data processing and automation, AI-driven content generation and analysis (facilitated by an AI agent like Manus), and iterative user guidance through prompts and feedback.
 
 ## Overview
@@ -12,17 +36,42 @@ Refer to `proprietary_novel_generation_workflow.md` for a detailed breakdown of 
 
 *   **Airtable**: Central narrative database. Schema details in `novel_project_airtable_schema.md`.
 *   **Python Scripts**: Located in the root of this repository. These scripts handle tasks such as text segmentation, Airtable uploading/fetching, chapter assembly, and analytics generation.
+*   **CLI Tool**: `manuscript_cli.py` - Unified interface for all operations (new!)
 *   **Workflow Documentation**: `proprietary_novel_generation_workflow.md`.
+
+## Installation
+
+### Quick Install
+
+```bash
+./install.sh
+```
+
+This will:
+- Install Python dependencies from `requirements.txt`
+- Create a `manuscript` command in `~/.local/bin`
+- Set up the configuration structure
+
+### Manual Installation
+
+1. Install Python 3.11+
+2. Install dependencies: `pip3 install -r requirements.txt`
+3. Make CLI executable: `chmod +x manuscript_cli.py`
+4. Create symlink: `ln -s $(pwd)/manuscript_cli.py ~/.local/bin/manuscript`
 
 ## Setup
 
 1.  **Airtable**: 
     *   Set up an Airtable base according to the schema defined in `novel_project_airtable_schema.md`.
     *   Obtain your Airtable API Key and Base ID.
-2.  **Python Environment**: 
-    *   Ensure Python 3.11+ is installed.
-    *   Install necessary Python libraries (e.g., `requests`, `python-dotenv`). A `requirements.txt` could be added in the future.
-3.  **Environment Variables**: The Python scripts (specifically `fetch_airtable_data.py` and `airtable_uploader.py`) expect the following environment variables to be set, or you can hardcode them directly into the scripts (not recommended for sensitive keys):
+2.  **Initialize Project**:
+    ```bash
+    manuscript init \
+      --airtable-key YOUR_AIRTABLE_API_KEY \
+      --airtable-base YOUR_AIRTABLE_BASE_ID \
+      --output-dir ./output
+    ```
+3.  **Environment Variables** (Alternative): The Python scripts can also use environment variables:
     *   `AIRTABLE_API_KEY`: Your Airtable Personal Access Token.
     *   `AIRTABLE_BASE_ID`: The ID of your Airtable base for the novel project.
     *   `AIRTABLE_CHAPTERS_TABLE_ID`: The ID of the "Chapters" table in your base.
@@ -39,7 +88,23 @@ Refer to `proprietary_novel_generation_workflow.md` for a detailed breakdown of 
 
 ## Usage
 
-Refer to the individual scripts and the main workflow document for detailed usage instructions. The system is designed to be orchestrated by an AI agent (like Manus) or run manually by a user familiar with the components.
+### CLI Commands
+
+```bash
+manuscript init        # Initialize project configuration
+manuscript segment     # Segment a chapter into tagged paragraphs
+manuscript upload      # Upload segments to Airtable
+manuscript fetch       # Fetch data from Airtable
+manuscript assemble    # Assemble chapter from segments
+manuscript analytics   # Generate quantitative analytics
+manuscript status      # Show project status
+```
+
+See [QUICKSTART.md](QUICKSTART.md) for detailed examples and workflows.
+
+### Individual Scripts (Legacy)
+
+The individual Python scripts can still be used directly. Refer to the scripts and the main workflow document for detailed usage instructions. The system is designed to be orchestrated by an AI agent (like Manus) or run manually by a user familiar with the components.
 
 ## Future Development
 
